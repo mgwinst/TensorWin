@@ -1,0 +1,66 @@
+struct Tensor {
+    View view;
+    std::shared_ptr<Buffer<T>> buffer;
+    std::optional<Ops> ops;
+    std::optional<Source> source;
+}
+
+struct View {
+    vector<int> shape;
+    vector<int> strides;
+    int size;
+}
+
+struct Buffer {
+    void* data;
+}
+
+-------------------------------------
+
+Tensor a(3, 3);
+Tensor b(3, 3);
+
+Tensor c = a + b;
+
+c = c + 10;
+
+Tensor d = c.matmul(a) + b
+
+-------------------------------------
+
+a init:
+
+    view
+    buffer
+    op = store / init 
+    source = nullptr
+
+b init: 
+
+    view 
+    buffer
+    op = store / init
+    source = nullptr
+
+c init:
+
+    view
+    buffer
+    op = add
+    source = a, b
+
+alter c tensor:
+
+    view = same
+    buffer = same
+    op = add
+    source = self
+
+d init: 
+
+    view 
+    buffer 
+    ops = matmul, add
+    source = c, a, b
+
+
