@@ -1,1 +1,8 @@
 We want to decouple representation with computation
+
+std::reference_wrapper<Tensor> vs Tensor* ? 
+
+Future Tensor ideas:
+    
+    std::vector<Tensor*> source; // dependencies of current Tensor
+    Op op; // operation that formed this Tensor
