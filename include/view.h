@@ -7,3 +7,5 @@ struct View {
     std::vector<int> strides;
     int size;
 };
+
+
