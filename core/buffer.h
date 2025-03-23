@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <exception>
+#include <iostream>
 
 template <typename T>
 struct Buffer {
@@ -17,25 +18,10 @@ struct Buffer {
 
     ~Buffer() noexcept { delete[] data; }
     
-    // can't copy buffers directly, tensors will pass copy shared_ptr<Buffer> to eachother
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;
-
-    Buffer(Buffer&& other) noexcept : data{other.data} , size{other.size} {
-        other.data = nullptr;
-        other.size = 0;
-        std::cout << "Buffer: called move constructor\n";
-    }
-
-    Buffer& operator=(Buffer&& other) noexcept {
-        delete[] data;
-        data = other.data;
-        size = other.size;
-        other.data = nullptr;
-        other.size = 0;
-        std::cout << "Buffer: called move assignment\n";
-        return *this;
-    }
+    Buffer(Buffer&&) = delete;
+    Buffer& operator=(Buffer&&) = delete;
 
     int num_bytes() const noexcept { return size * sizeof(T); }
     

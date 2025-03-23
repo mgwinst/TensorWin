@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <iostream>
 
 #include "buffer.h"
 #include "view.h"
@@ -14,21 +15,19 @@ struct Tensor {
     Tensor(const std::vector<int>& shape) :
     view{shape}, buffer{std::make_shared<Buffer<T>>(get_size_from_shape(shape))} {}
 
-    Tensor(const Tensor& other) : view{other.view}, buffer{other.buffer} { std::cout << "Tensor: called copy constructor\n"; }
+    Tensor(const Tensor& other) : view{other.view}, buffer{other.buffer} {}
 
     Tensor& operator=(const Tensor& other) {
         view = other.view;
         buffer = other.buffer;
-        std::cout << "Tensor: called copy assignment\n"; 
         return *this;
     }
 
-    Tensor(Tensor&& other) : view{std::move(other.view)}, buffer{std::move(other.buffer)} { std::cout << "Tensor: called move constructor\n"; }
+    Tensor(Tensor&& other) : view{std::move(other.view)}, buffer{std::move(other.buffer)} {}
 
     Tensor& operator=(Tensor&& other) {
         view = std::move(other.view);
         buffer = std::move(other.buffer);
-        std::cout << "Tensor: called move assignment\n"; 
         return *this;
     }
 
@@ -48,7 +47,9 @@ struct Tensor {
     }
 
 
-
+    static void print(Tensor<T>& tensor) {
+        std::println("(Tensor -> (shape={}, strides={}, size=[{}]))", tensor.view.shape, tensor.view.strides, tensor.view.size);
+    }
 
 
     // Tensor properties

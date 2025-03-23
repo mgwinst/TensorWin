@@ -5,13 +5,10 @@
 
 int main() {
 
+    Tensor<float> a({4, 4, 32, 32});   
 
-    Tensor<float> a = Tensor<float>::arange(5);   
+    Tensor<float>::print(a);
+   
 
-    for (auto i = 0; i < a.size(); i++) {
-        std::cout << a[i] << ' ';
-    }
-    std::cout << '\n';
-    
 }
 

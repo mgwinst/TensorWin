@@ -31,14 +31,12 @@ View::View(const View& other) :
     strides{other.strides},
     size{other.size} 
 {
-    std::cout << "View: called copy constructor\n";
 }
  
 View& View::operator=(const View& other) {
     shape = other.shape;
     strides = other.strides;
     size = other.size;
-    std::cout << "View: called copy assignment\n";
     return *this;
 }
 
@@ -50,7 +48,6 @@ View::View(View&& other) :
         other.shape.clear();
         other.strides.clear();
         other.size = 0;
-        std::cout << "View: called move constructor\n";
     }
 
 View& View::operator=(View&& other) {
@@ -60,6 +57,5 @@ View& View::operator=(View&& other) {
     other.shape.clear();
     other.strides.clear();
     other.size = 0;
-    std::cout << "View: called move assignment\n";
     return *this;
 }
