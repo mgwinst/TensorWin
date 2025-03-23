@@ -1,31 +1,17 @@
 #include <iostream>
+#include <print>
 
 #include "core/tensor.h"
 
 int main() {
 
-    Tensor<float> t1({1, 2, 3});
+    Tensor<float> a = Tensor<float>::arange(10);   
 
-    std::cout << t1.data() << '\n';
-    std::cout << t1.nbytes() << '\n';
-    std::cout << t1.numel() << '\n';
 
-    std::cout << '(';
-    for (auto x : t1.shape()) {
-        std::cout << x << ' ';
+    for (auto i = 0; i < a.size(); i++) {
+        std::cout << a[i] << ' ';
     }
-    std::cout << ')';
     std::cout << '\n';
-
-    std::cout << '(';
-    for (auto x : t1.strides()) {
-        std::cout << x << ' ';
-    }
-    std::cout << ')';
-    std::cout << '\n';
-
-
-
     
 }
 
