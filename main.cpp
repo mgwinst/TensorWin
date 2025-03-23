@@ -5,8 +5,8 @@
 
 int main() {
 
-    Tensor<float> a = Tensor<float>::arange(10);   
 
+    Tensor<float> a = Tensor<float>::arange(5);   
 
     for (auto i = 0; i < a.size(); i++) {
         std::cout << a[i] << ' ';

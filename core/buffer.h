@@ -21,20 +21,20 @@ struct Buffer {
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;
 
-    Buffer(Buffer&& other) {
-        assert(data = other.data);
+    Buffer(Buffer&& other) noexcept : data{other.data} , size{other.size} {
         other.data = nullptr;
-
-        size = other.size;
         other.size = 0;
+        std::cout << "Buffer: called move constructor\n";
     }
 
-    Buffer& operator=(Buffer&& other) {
-        assert(data = other.data);
-        other.data = nullptr;
-
+    Buffer& operator=(Buffer&& other) noexcept {
+        delete[] data;
+        data = other.data;
         size = other.size;
+        other.data = nullptr;
         other.size = 0;
+        std::cout << "Buffer: called move assignment\n";
+        return *this;
     }
 
     int num_bytes() const noexcept { return size * sizeof(T); }

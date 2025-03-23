@@ -14,17 +14,21 @@ struct Tensor {
     Tensor(const std::vector<int>& shape) :
     view{shape}, buffer{std::make_shared<Buffer<T>>(get_size_from_shape(shape))} {}
 
-    Tensor(const Tensor& other) : view{other.view}, buffer{other.buffer} {}
+    Tensor(const Tensor& other) : view{other.view}, buffer{other.buffer} { std::cout << "Tensor: called copy constructor\n"; }
+
     Tensor& operator=(const Tensor& other) {
         view = other.view;
         buffer = other.buffer;
+        std::cout << "Tensor: called copy assignment\n"; 
+        return *this;
     }
 
-    Tensor(Tensor&& other) : view{std::move(other.view)}, buffer{std::move(other.buffer)} {}
+    Tensor(Tensor&& other) : view{std::move(other.view)}, buffer{std::move(other.buffer)} { std::cout << "Tensor: called move constructor\n"; }
 
     Tensor& operator=(Tensor&& other) {
         view = std::move(other.view);
         buffer = std::move(other.buffer);
+        std::cout << "Tensor: called move assignment\n"; 
         return *this;
     }
 
@@ -36,15 +40,12 @@ struct Tensor {
     // Creation
 
     static Tensor<T> arange(int size) noexcept {
-        Tensor t{{10}};
+        Tensor t{{size}};
         for (auto i = 0; i < t.size(); i++) {
             t.buffer->data[i] = i;
         }
         return t;
     }
-
-
-
 
 
 

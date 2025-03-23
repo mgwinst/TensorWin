@@ -1,5 +1,6 @@
 #include <vector>
 #include <numeric>
+#include <iostream>
 
 #include "view.h"
 
@@ -23,33 +24,42 @@ std::vector<int> get_strides_from_shape(const std::vector<int>& shape) {
 View::View(const std::vector<int>& shape) :
     shape{shape},
     strides{get_strides_from_shape(shape)},
-    size{get_size_from_shape(shape)}
-{}
+    size{get_size_from_shape(shape)} {}
 
 View::View(const View& other) : 
     shape{other.shape},
     strides{other.strides},
     size{other.size} 
-{}
-    
-View::View(View&& other) : 
-    shape{std::move(other.shape)},
-    strides{std::move(other.strides)},
-    size{other.size} 
-    { 
-        other.size = 0;
-    }
-
+{
+    std::cout << "View: called copy constructor\n";
+}
+ 
 View& View::operator=(const View& other) {
     shape = other.shape;
     strides = other.strides;
     size = other.size;
+    std::cout << "View: called copy assignment\n";
     return *this;
 }
+
+View::View(View&& other) : 
+    shape{std::move(other.shape)},
+    strides{std::move(other.strides)},
+    size{other.size} {
+        // clearing the old vectors
+        other.shape.clear();
+        other.strides.clear();
+        other.size = 0;
+        std::cout << "View: called move constructor\n";
+    }
+
 View& View::operator=(View&& other) {
     shape = std::move(other.shape);
     strides = std::move(other.strides);
     size = other.size;
+    other.shape.clear();
+    other.strides.clear();
     other.size = 0;
+    std::cout << "View: called move assignment\n";
     return *this;
 }
