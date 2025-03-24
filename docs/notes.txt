@@ -6,3 +6,13 @@ Future Tensor ideas:
     
     std::vector<Tensor*> source; // dependencies of current Tensor
     Op op; // operation that formed this Tensor
+
+
+Should buffers be completely decoupled from Tensors?
+    idea here may be to have pool of buffers, build tensor/compute dependencies,
+    then select which buffers to perform compute on. (explore this later...)
+
+
+must support bf16
+
+

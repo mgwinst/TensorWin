@@ -29,9 +29,7 @@ View::View(const std::vector<int>& shape) :
 View::View(const View& other) : 
     shape{other.shape},
     strides{other.strides},
-    size{other.size} 
-{
-}
+    size{other.size} {}
  
 View& View::operator=(const View& other) {
     shape = other.shape;
@@ -44,7 +42,7 @@ View::View(View&& other) :
     shape{std::move(other.shape)},
     strides{std::move(other.strides)},
     size{other.size} {
-        // clearing the old vectors
+        // clearing the old vectors, necessary?
         other.shape.clear();
         other.strides.clear();
         other.size = 0;

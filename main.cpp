@@ -5,9 +5,22 @@
 
 int main() {
 
-    Tensor<float> a({4, 4, 32, 32});   
+    // Tensor<float> a = Tensor<float>::arange(10);   
+    Tensor<float> a = Tensor<float>::arange(10);
+    Tensor<float> b = a;
 
     Tensor<float>::print(a);
+    std::print("{}\n", a.buffer->data[5]);
+
+    Tensor<float>::print(b);
+    std::print("{}\n", b.buffer->data[5]);
+
+    // Tensor<float> c = a.reshape(2, 5);
+
+
+    
+
+    
    
 
 }
