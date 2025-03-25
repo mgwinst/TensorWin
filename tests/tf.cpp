@@ -13,7 +13,8 @@ void func2(const Ts&... idxs) {
 }
 
 int main() {
-    func2(1, 2, 3, 4);
-}
+
+
+}   
 
 
