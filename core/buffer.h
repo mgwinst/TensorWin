@@ -22,7 +22,4 @@ struct Buffer {
     Buffer& operator=(const Buffer&) = delete;
     Buffer(Buffer&&) = delete;
     Buffer& operator=(Buffer&&) = delete;
-
-    int num_bytes() const noexcept { return size * sizeof(T); }
-    
 };

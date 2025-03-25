@@ -14,11 +14,10 @@ struct Tensor {
     View view;
     std::shared_ptr<Buffer<T>> buffer; 
 
-    
     Tensor(const std::vector<int>& shape) :
     view{shape}, buffer{std::make_shared<Buffer<T>>(get_size_from_shape(shape))} {}
 
-    // want the option to specifiy buffer (e.g. reshape())
+    // want the option to specifiy a buffer (e.g. reshape())
     Tensor(const std::vector<int>& shape, std::shared_ptr<Buffer<T>> buff) noexcept : view{shape}, buffer{buff} {}
 
     Tensor(const Tensor& other) : view{other.view}, buffer{other.buffer} {}
@@ -36,13 +35,12 @@ struct Tensor {
         buffer = std::move(other.buffer);
         return *this;
     }
-    
 
     // Creation
 
     static Tensor<T> zeros(const std::vector<int>& shape) noexcept {
         Tensor<T> t{shape};
-        for (auto i = 0; i < t.view.size; i++) {
+        for (auto i = 0; i < t.size(); i++) {
             t.buffer->data[i] = 0;
         }
         return t;
@@ -50,7 +48,7 @@ struct Tensor {
 
     static Tensor<T> ones(const std::vector<int>& shape) noexcept {
         Tensor<T> t{shape};
-        for (auto i = 0; i < t.view.size; i++) {
+        for (auto i = 0; i < t.size(); i++) {
             t.buffer->data[i] = 1;
         }
         return t;
@@ -58,7 +56,7 @@ struct Tensor {
     
     static Tensor<T> full(const std::vector<int>& shape, T fill_value) noexcept {
         Tensor<T> t{shape};
-        for (auto i = 0; i < t.view.size; i++) {
+        for (auto i = 0; i < t.size(); i++) {
             t.buffer->data[i] = fill_value;
         }
         return t;
@@ -81,7 +79,6 @@ struct Tensor {
         }
         return t;
     }
-
 
     // CLEAN THIS UP
     static Tensor<T> eye(int n, std::optional<int> m = std::nullopt) {
@@ -130,7 +127,6 @@ struct Tensor {
         return t;
     } 
 
-
     // reshape() will not change state, but return another Tensor with a new view
     // do we need a view() alias?
     Tensor<T> reshape(const std::vector<int>& shape) const {
@@ -154,8 +150,6 @@ struct Tensor {
         std::cout << '\n';
     }
 
-
-
     // Tensor properties
     std::vector<int> shape() const noexcept { return view.shape; }
     int shape(const int dim) const noexcept { return view.shape.at(dim); }
@@ -163,8 +157,8 @@ struct Tensor {
     std::vector<int> strides() const noexcept { return view.strides; }
     int size() const noexcept { return buffer->size; }
     T* data() const noexcept { return buffer->data; }
-    int nbytes() const noexcept { return buffer->num_bytes(); }
-    int numel() const noexcept { return view.size; }
+    int nbytes() const noexcept { return buffer->size * sizeof(T); }
+    int numel() const noexcept { return buffer->size; }
     int element_size() const noexcept { return sizeof(T); }
     
        
