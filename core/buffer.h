@@ -4,6 +4,7 @@
 #include <cassert>
 #include <exception>
 #include <iostream>
+#include <memory>
 
 template <typename T>
 struct Buffer {
@@ -23,3 +24,8 @@ struct Buffer {
     Buffer(Buffer&&) = delete;
     Buffer& operator=(Buffer&&) = delete;
 };
+
+template <typename T>
+std::shared_ptr<Buffer<T>> create_buffer(int size) {
+    return std::make_shared<Buffer<T>>(size);
+}

@@ -131,14 +131,14 @@ struct Tensor {
     // do we need a view() alias?
     Tensor<T> reshape(const std::vector<int>& shape) const {
         auto n = std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<>());
-        if ((*this).view.size != (n)) throw std::invalid_argument("reshape dims mismatch");
+        if ((*this).size() != (n)) throw std::invalid_argument("reshape dims mismatch");
         return Tensor<T>{shape, (*this).buffer};
         
     }
 
     // print tensor information
     static void print(Tensor<T>& tensor) {
-        std::println("(Tensor -> (shape={}, strides={}, size=[{}]))", tensor.view.shape, tensor.view.strides, tensor.view.size);
+        std::println("(Tensor -> (shape={}, strides={}, size=[{}]))", tensor.view.shape, tensor.view.strides, tensor.size());
     }
 
     // little debug helper, will remove later
