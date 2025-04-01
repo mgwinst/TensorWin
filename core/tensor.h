@@ -161,5 +161,6 @@ struct Tensor {
     int numel() const noexcept { return buffer->size; }
     int element_size() const noexcept { return sizeof(T); }
     
-       
+    
 };
+
