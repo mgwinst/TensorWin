@@ -1,62 +1,61 @@
 #include <gtest/gtest.h>
 #include "../core/tensor.h"
 
-TEST(TensorProperties, Size) {
-    Tensor<float> t1({1024});   
-    EXPECT_EQ(t1.size(), 1024);
+TEST(TensorProperties, size) {
+    // check this first
+    Tensor<float> t0({32});
+    EXPECT_EQ(t0.size(), t0.buffer->size);
+       
+    Tensor<float> a({32});   
+    EXPECT_EQ(a.size(), 32);
 
-    Tensor<float> t2({32, 32});   
-    EXPECT_EQ(t2.size(), 1024);
+    Tensor<float> b({32, 32});   
+    EXPECT_EQ(b.size(), 1024);
 
-    Tensor<float> t3({4, 4, 4});   
-    EXPECT_EQ(t3.size(), 64);
+    Tensor<float> c({4, 4, 4});   
+    EXPECT_EQ(c.size(), 64);
 
-    Tensor<float> t4({4, 4, 4, 4});   
-    EXPECT_EQ(t4.size(), 256);
+    Tensor<float> d({4, 4, 4, 4});   
+    EXPECT_EQ(d.size(), 256);
 }
 
-TEST(TensorProperties, NumberOfBytes) {
-    Tensor<float> t1({32});   
-    EXPECT_EQ(t1.nbytes(), 32 * (sizeof(float)));
+TEST(TensorProperties, nbytes) {
+    Tensor<float> a({32});   
+    EXPECT_EQ(a.nbytes(), 32 * (sizeof(float)));
 
-    Tensor<int> t2({32});   
-    EXPECT_EQ(t2.nbytes(), 32 * (sizeof(int)));
+    Tensor<int> b({32});   
+    EXPECT_EQ(b.nbytes(), 32 * (sizeof(int)));
 }
 
-TEST(TensorProperties, Strides) {
-    Tensor<float> t1({64});
-    auto strides1 = t1.strides();
-    EXPECT_EQ(strides1[0], 1);
+TEST(TensorProperties, strides) {
+    Tensor<float> a({64});
+    EXPECT_EQ(a.strides()[0], 1);
 
-    Tensor<float> t2({10, 10});
-    auto strides2 = t2.strides();
-    EXPECT_EQ(strides2[0], 10);
-    EXPECT_EQ(strides2[1], 1);
+    Tensor<float> b({10, 10});
+    EXPECT_EQ(b.strides()[0], 10);
+    EXPECT_EQ(b.strides()[1], 1);
     
-    Tensor<float> t3({3, 4, 4});
-    auto strides3 = t3.strides();
-    EXPECT_EQ(strides3[0], 16);
-    EXPECT_EQ(strides3[1], 4);
-    EXPECT_EQ(strides3[2], 1);
+    Tensor<float> c({3, 4, 4});
+    EXPECT_EQ(c.strides()[0], 16);
+    EXPECT_EQ(c.strides()[1], 4);
+    EXPECT_EQ(c.strides()[2], 1);
 }
 
-TEST(TensorProperties, Shape) {
-    Tensor<float> t1({10});
-    auto shape1 = t1.shape();
-    EXPECT_EQ(shape1[0], 10);
+TEST(TensorProperties, shape) {
+    Tensor<float> a({10});
+    EXPECT_EQ(a.shape()[0], 10);
 
-    Tensor<float> t2({8, 4, 4});
-    auto shape2 = t2.shape();
-    EXPECT_EQ(shape2[0], 8);
-    EXPECT_EQ(shape2[1], 4);
-    EXPECT_EQ(shape2[2], 4);
+    Tensor<float> b({8, 4, 4});
+    EXPECT_EQ(b.shape()[0], 8);
+    EXPECT_EQ(b.shape()[1], 4);
+    EXPECT_EQ(b.shape()[2], 4);
 }
 
-TEST(TensorProperties, ShapeSpecificDim) {
-    Tensor<float> t1({8, 4, 4});
-    EXPECT_EQ(t1.shape(0), 8);
-    EXPECT_EQ(t1.shape(1), 4);
-    EXPECT_EQ(t1.shape(2), 4);
+TEST(TensorProperties, shape_specific_dim) {
+    Tensor<float> a({8, 4, 4});
+    EXPECT_EQ(a.shape(0), 8);
+    EXPECT_EQ(a.shape(1), 4);
+    EXPECT_EQ(a.shape(2), 4);
 }
 
 

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../core/tensor.h"
 
-TEST(TensorConstructionAndAssignment, CopyConstructor) {
+TEST(TensorConstructionAndAssignment, copy_constructor) {
     Tensor<float> a({4, 4});
     Tensor<float> b = a;
 
@@ -13,7 +13,7 @@ TEST(TensorConstructionAndAssignment, CopyConstructor) {
 
 }
 
-TEST(TensorConstructionAndAssignment, CopyAssignment) {
+TEST(TensorConstructionAndAssignment, copy_assignment) {
     Tensor<float> a({4, 4});
     Tensor<float> b({4, 128, 128});
     b = a;
@@ -25,7 +25,7 @@ TEST(TensorConstructionAndAssignment, CopyAssignment) {
     // EXPECT_EQ(a.data(), b.data()); // necessary if we already check buffers?
 }
 
-TEST(TensorConstructionAndAssignment, MoveConstructor) {
+TEST(TensorConstructionAndAssignment, move_constructor) {
     Tensor<float> a({4, 4});
     auto a_addr = a.data();
     auto a_shape = a.shape();
@@ -43,7 +43,7 @@ TEST(TensorConstructionAndAssignment, MoveConstructor) {
 
 }
 
-TEST(TensorConstructionAndAssignment, MoveAssignment) {
+TEST(TensorConstructionAndAssignment, move_assignment) {
     Tensor<float> a({4, 4});
     Tensor<float> b({10});
     auto a_addr = a.data();
@@ -62,7 +62,7 @@ TEST(TensorConstructionAndAssignment, MoveAssignment) {
 
 }
 
-TEST(TensorConstructionAndAssignment, MultipleCopyAssignment) { 
+TEST(TensorConstructionAndAssignment, multiple_copy_assignment) { 
     Tensor<float> a({4, 4});
     Tensor<float> b({4, 4});
     Tensor<float> c({4, 4});
@@ -86,7 +86,6 @@ TEST(TensorConstructionAndAssignment, MultipleCopyAssignment) {
     EXPECT_EQ(c.buffer, d.buffer);
     
 }
-
 
 
 
