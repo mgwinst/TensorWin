@@ -23,7 +23,7 @@ TEST(TensorProperties, NumberOfBytes) {
     EXPECT_EQ(t2.nbytes(), 32 * (sizeof(int)));
 }
 
-TEST(TensorProperties, StridesAll) {
+TEST(TensorProperties, Strides) {
     Tensor<float> t1({64});
     auto strides1 = t1.strides();
     EXPECT_EQ(strides1[0], 1);
