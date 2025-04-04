@@ -12,35 +12,35 @@ TEST(TensorFunctions, reshape) {
 }
 
 TEST(TensorFunctions, zeros) {
-    int size = 32;
+    int32_t size = 32;
     auto a = Tensor<float>::zeros({size});
     for (auto i = 0; i < size; i++) {
-        EXPECT_EQ(a.buffer->data[i], 0);
+        EXPECT_EQ(a.buffer->ptr[i], 0);
     }
 }
 
 TEST(TensorFunctions, ones) {
-    int size = 32;
+    int32_t size = 32;
     auto a = Tensor<float>::ones({size});
     for (auto i = 0; i < size; i++) {
-        EXPECT_EQ(a.buffer->data[i], 1);
+        EXPECT_EQ(a.buffer->ptr[i], 1);
     }
 }
 
 TEST(TensorFunctions, linspace) {
     auto a = Tensor<float>::linspace(0, 10, 5);
-    EXPECT_EQ(a.buffer->data[0], 0.0);
-    EXPECT_EQ(a.buffer->data[1], 2.5);
-    EXPECT_EQ(a.buffer->data[2], 5.0);
-    EXPECT_EQ(a.buffer->data[3], 7.5);
-    EXPECT_EQ(a.buffer->data[4], 10.0);
+    EXPECT_EQ(a.buffer->ptr[0], 0.0);
+    EXPECT_EQ(a.buffer->ptr[1], 2.5);
+    EXPECT_EQ(a.buffer->ptr[2], 5.0);
+    EXPECT_EQ(a.buffer->ptr[3], 7.5);
+    EXPECT_EQ(a.buffer->ptr[4], 10.0);
 
     a = Tensor<float>::linspace(-10, 10, 5);
-    EXPECT_EQ(a.buffer->data[0], -10.0);
-    EXPECT_EQ(a.buffer->data[1], -5.0);
-    EXPECT_EQ(a.buffer->data[2], 0.0);
-    EXPECT_EQ(a.buffer->data[3], 5.0);
-    EXPECT_EQ(a.buffer->data[4], 10.0);
+    EXPECT_EQ(a.buffer->ptr[0], -10.0);
+    EXPECT_EQ(a.buffer->ptr[1], -5.0);
+    EXPECT_EQ(a.buffer->ptr[2], 0.0);
+    EXPECT_EQ(a.buffer->ptr[3], 5.0);
+    EXPECT_EQ(a.buffer->ptr[4], 10.0);
 }
 
 // do this later
@@ -58,7 +58,7 @@ TEST(TensorFunctions, full_like) {
     EXPECT_EQ(a.size(), b.size());
     
     for (auto i = 0; i < 16; i++) {
-        EXPECT_EQ(b.buffer->data[i], 3);
+        EXPECT_EQ(b.buffer->ptr[i], 3);
     }
 }
 
@@ -71,7 +71,7 @@ TEST(TensorFunctions, ones_like) {
     EXPECT_EQ(a.size(), b.size());
     
     for (auto i = 0; i < 16; i++) {
-        EXPECT_EQ(b.buffer->data[i], 1);
+        EXPECT_EQ(b.buffer->ptr[i], 1);
     }
 }
 
@@ -84,7 +84,7 @@ TEST(TensorFunctions, zeros_like) {
     EXPECT_EQ(a.size(), b.size());
     
     for (auto i = 0; i < 16; i++) {
-        EXPECT_EQ(b.buffer->data[i], 0);
+        EXPECT_EQ(b.buffer->ptr[i], 0);
     }
 }
 
