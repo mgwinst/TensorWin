@@ -4,7 +4,7 @@
 
 #include "view.h"
 
-View::View(const std::vector<int>& shape) :
+View::View(const std::vector<std::size_t>& shape) :
     shape{shape},
     strides{get_strides_from_shape(shape)} {}
 
@@ -13,8 +13,10 @@ View::View(const View& other) :
     strides{other.strides} {}
  
 View& View::operator=(const View& other) {
-    shape = other.shape;
-    strides = other.strides;
+    if (this != &other) {
+        shape = other.shape;
+        strides = other.strides;
+    }
     return *this;
 }
 
@@ -28,9 +30,11 @@ View::View(View&& other) :
     }
 
 View& View::operator=(View&& other) {
-    shape = std::move(other.shape);
-    strides = std::move(other.strides);
-    other.shape.clear();
-    other.strides.clear();
+    if (this != &other) {
+        shape = std::move(other.shape);
+        strides = std::move(other.strides);
+        other.shape.clear();
+        other.strides.clear();
+    }
     return *this;
 }

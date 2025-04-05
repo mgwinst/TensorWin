@@ -1,0 +1,35 @@
+*** TENSORWIN DOCUMENTATION ***
+
+
+
+
+
+
+*** CREATION *** 
+
+Tensor<T> reshape(const std::vector<std::size_t>& shape) const;
+static Tensor<T> zeros(const std::vector<std::size_t>& shape) noexcept;
+static Tensor<T> ones(const std::vector<std::size_t>& shape) noexcept;
+static Tensor<T> full(const std::vector<std::size_t>& shape, T fill_value) noexcept;
+static Tensor<T> arange(const std::size_t size) noexcept;
+static Tensor<T> linspace(const float start, const float stop, const std::size_t steps) noexcept;
+static Tensor<T> eye(std::size_t n, std::optional<std::size_t> m = std::nullopt); // clean up this function
+static Tensor<T> full_like(const Tensor<T>& tensor, std::size_t fill_value) noexcept; 
+static Tensor<T> ones_like(const Tensor<T>& tensor) noexcept;
+static Tensor<T> zeros_like(const Tensor<T>& tensor) noexcept;
+static void print(const Tensor<T>& tensor) noexcept;
+static void print2D(const Tensor<T>& tensor) noexcept; // debug helper, will remove later
+
+
+
+
+*** PROPERTIES ***
+
+std::vector<std::size_t> shape() const noexcept;
+std::size_t shape(const std::size_t dim) const noexcept;
+std::vector<std::size_t> strides() const noexcept;
+std::size_t size() const noexcept;
+std::size_t numel() const noexcept;
+T* data() const noexcept;
+std::size_t element_size() const noexcept;
+std::size_t nbytes() const noexcept;

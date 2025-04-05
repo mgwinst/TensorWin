@@ -5,12 +5,13 @@
 
 #include "utils.h"
 
-struct View {
-    std::vector<int> shape;
-    std::vector<int> strides;
-    // int offset;
+class View {
+public:
+    std::vector<std::size_t> shape;
+    std::vector<std::size_t> strides;
+    // std::size_t offset;
     
-    View(const std::vector<int>&);
+    View(const std::vector<std::size_t>&);
 
     View() = delete;
     View(const View&);

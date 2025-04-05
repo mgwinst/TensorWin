@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../core/tensor.h"
 
-TEST(TensorFunctions, reshape) {
+TEST(TensorFunctions, assign_reshape) {
     Tensor<float> a({2, 3, 2});
     Tensor<float> b = a.reshape({4, 3});
     
@@ -11,16 +11,29 @@ TEST(TensorFunctions, reshape) {
     EXPECT_EQ(b.shape()[1], 3);
 }
 
+TEST(TensorFunctions, reshape_and_assign_to_self) {
+    Tensor<float> a({2, 3, 2});
+    a = a.reshape({3, 2, 2});
+    
+    EXPECT_EQ(a.shape()[0], 3);
+    EXPECT_EQ(a.shape()[1], 2);
+    EXPECT_EQ(a.shape()[2], 2);
+
+    EXPECT_EQ(a.strides()[0], 4);
+    EXPECT_EQ(a.strides()[1], 2);
+    EXPECT_EQ(a.strides()[2], 1);
+}
+
 TEST(TensorFunctions, zeros) {
-    int32_t size = 32;
+    std::size_t size = 32;
     auto a = Tensor<float>::zeros({size});
     for (auto i = 0; i < size; i++) {
-        EXPECT_EQ(a.buffer->ptr[i], 0);
+        EXPECT_EQ(a.buffer->ptr[i], 0.0);
     }
 }
 
 TEST(TensorFunctions, ones) {
-    int32_t size = 32;
+    std::size_t size = 32;
     auto a = Tensor<float>::ones({size});
     for (auto i = 0; i < size; i++) {
         EXPECT_EQ(a.buffer->ptr[i], 1);

@@ -16,3 +16,8 @@ Should buffers be completely decoupled from Tensors?
 must support bf16
 
 
+How to make git run gtest tests on push / commit? Is this possible?
+
+smart pointer to wrap view objects? currently no user defined destructor, could simplify copy/move
+
+clean up tensor::eye and write test for it

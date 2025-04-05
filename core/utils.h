@@ -1,4 +1,4 @@
 #pragma once
 
-int get_size_from_shape(const std::vector<int>&);
-std::vector<int> get_strides_from_shape(const std::vector<int>&);
+std::size_t get_size_from_shape(const std::vector<std::size_t>&);
+std::vector<std::size_t> get_strides_from_shape(const std::vector<std::size_t>&);

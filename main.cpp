@@ -4,12 +4,12 @@
 #include "core/tensor.h"
 
 int main() {
-    Tensor<float> a = Tensor<float>::arange(12).reshape({3, 2, 2});
-    Tensor<float> b = a.reshape({6, 2});
+    Tensor<float> a = Tensor<float>::ones({32});
+    std::print("{}\n", a.size());
+    std::print("{}\n", a.buffer->capacity);
+    std::cout << a.buffer->ptr[31] << '\n';
+    
+    
 
-    Tensor<float>::print(a);
-    Tensor<float>::print(b);
 
-    std::cout << a.buffer->data << '\n';
-    std::cout << b.buffer->data << '\n';
 }
