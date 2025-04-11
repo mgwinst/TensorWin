@@ -1,7 +1,18 @@
 #include <gtest/gtest.h>
 #include "../core/tensor.h"
 
-TEST(TensorFunctions, assign_reshape) {
+TEST(TensorCreation, construct_from_shape) {
+    Tensor<float> a({2, 3, 2});
+    Tensor<float> b{a.shape()};
+
+    EXPECT_EQ(b.shape(), a.shape());
+    EXPECT_EQ(b.size(), a.size());
+    EXPECT_EQ(b.shape()[0], 2);
+    EXPECT_EQ(b.shape()[1], 3);
+    EXPECT_EQ(b.shape()[2], 2);
+}
+
+TEST(TensorCreation, assign_reshape) {
     Tensor<float> a({2, 3, 2});
     Tensor<float> b = a.reshape({4, 3});
     
@@ -11,7 +22,7 @@ TEST(TensorFunctions, assign_reshape) {
     EXPECT_EQ(b.shape()[1], 3);
 }
 
-TEST(TensorFunctions, reshape_and_assign_to_self) {
+TEST(TensorCreation, reshape_and_assign_to_self) {
     Tensor<float> a({2, 3, 2});
     a = a.reshape({3, 2, 2});
     
@@ -24,7 +35,7 @@ TEST(TensorFunctions, reshape_and_assign_to_self) {
     EXPECT_EQ(a.strides()[2], 1);
 }
 
-TEST(TensorFunctions, zeros) {
+TEST(TensorCreation, zeros) {
     std::size_t size = 32;
     auto a = Tensor<float>::zeros({size});
     for (auto i = 0; i < size; i++) {
@@ -32,7 +43,7 @@ TEST(TensorFunctions, zeros) {
     }
 }
 
-TEST(TensorFunctions, ones) {
+TEST(TensorCreation, ones) {
     std::size_t size = 32;
     auto a = Tensor<float>::ones({size});
     for (auto i = 0; i < size; i++) {
@@ -40,7 +51,7 @@ TEST(TensorFunctions, ones) {
     }
 }
 
-TEST(TensorFunctions, linspace) {
+TEST(TensorCreation, linspace) {
     auto a = Tensor<float>::linspace(0, 10, 5);
     EXPECT_EQ(a.buffer->ptr[0], 0.0);
     EXPECT_EQ(a.buffer->ptr[1], 2.5);
@@ -57,12 +68,12 @@ TEST(TensorFunctions, linspace) {
 }
 
 // do this later
-TEST(TensorFunctions, eye) {
+TEST(TensorCreation, eye) {
     auto a = Tensor<float>::eye(3);
     
 }
 
-TEST(TensorFunctions, full_like) {
+TEST(TensorCreation, full_like) {
     Tensor<float> a({4, 4});
     auto b = Tensor<float>::full_like(a, 3);
     
@@ -75,7 +86,7 @@ TEST(TensorFunctions, full_like) {
     }
 }
 
-TEST(TensorFunctions, ones_like) {
+TEST(TensorCreation, ones_like) {
     Tensor<float> a({4, 4});
     auto b = Tensor<float>::ones_like(a);
     
@@ -88,7 +99,7 @@ TEST(TensorFunctions, ones_like) {
     }
 }
 
-TEST(TensorFunctions, zeros_like) {
+TEST(TensorCreation, zeros_like) {
     Tensor<float> a({4, 4});
     auto b = Tensor<float>::zeros_like(a);
     

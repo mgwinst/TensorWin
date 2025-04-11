@@ -58,5 +58,13 @@ TEST(TensorProperties, shape_specific_dim) {
     EXPECT_EQ(a.shape(2), 4);
 }
 
+TEST(TensorProperties, ndim) {
+    Tensor<float> a({8, 4, 4});
+    EXPECT_EQ(a.ndim(), 3);
+
+    Tensor<float> b({4, 4});
+    EXPECT_EQ(b.ndim(), 2);
+}
+
 
 

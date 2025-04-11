@@ -21,3 +21,15 @@ How to make git run gtest tests on push / commit? Is this possible?
 smart pointer to wrap view objects? currently no user defined destructor, could simplify copy/move
 
 clean up tensor::eye and write test for it
+
+
+
+M3 supports 128-bit SIMD (NEON)
+x86 supports up to 512-bit SIMD (AVX)
+
+
+
+
+
+IDEA: perhaps we don't attach tensor on construction, further decoupling between tensor and buffer allow
+us to keep the tensor lighter and only bufferize when we need to do computation or print results

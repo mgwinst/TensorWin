@@ -19,3 +19,4 @@ std::vector<std::size_t> get_strides_from_shape(const std::vector<std::size_t>& 
     }
     return strides;
 }
+

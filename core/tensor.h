@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include <iostream>
+#include <print>
 #include <cmath>
 
 #include "buffer.h"
@@ -40,7 +40,6 @@ public:
         }
         return *this;
     }
-
 
 
 
@@ -162,6 +161,22 @@ public:
 
 
 
+    
+    Tensor<T> add(const Tensor<T>& other) {
+
+    }
+    
+    
+    
+
+
+
+
+
+
+
+
+
 
 
 
@@ -173,6 +188,7 @@ public:
     std::vector<std::size_t> strides() const noexcept { return view.strides; }
     std::size_t size() const noexcept { return buffer->size; }
     std::size_t numel() const noexcept { return buffer->size; }
+    std::size_t ndim() const noexcept { return view.shape.size(); }
     T* data() const noexcept { return buffer->ptr; }
     std::size_t element_size() const noexcept { return sizeof(T); }
     std::size_t nbytes() const noexcept { return buffer->size * sizeof(T); }

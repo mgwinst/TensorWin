@@ -24,7 +24,7 @@ public:
     explicit Buffer(std::size_t n) {
         if (n > max_size() || n <= 0) throw std::bad_array_new_length();
         size = n;
-        capacity = ((n + align_val - 1) / align_val) * align_val;
+        capacity = ((n + align_val - 1) & ~(align_val-1));
         ptr = static_cast<T*>(::operator new[](capacity * sizeof(T), alignment));
         if (!ptr) throw std::bad_alloc();
     }
