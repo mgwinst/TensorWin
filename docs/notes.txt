@@ -33,3 +33,7 @@ x86 supports up to 512-bit SIMD (AVX)
 
 IDEA: perhaps we don't attach tensor on construction, further decoupling between tensor and buffer allow
 us to keep the tensor lighter and only bufferize when we need to do computation or print results
+
+
+how to make buffer compatable with STL algorithms or ranges? 
+    Iterators? what else?
