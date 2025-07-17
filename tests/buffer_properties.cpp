@@ -26,3 +26,4 @@ TEST(BufferProperties, alignment) {
     EXPECT_EQ(buffer4.size, 55);
     EXPECT_EQ(buffer4.capacity, 64);
 }
+

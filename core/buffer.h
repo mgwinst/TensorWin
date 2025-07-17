@@ -8,23 +8,27 @@
 #include <memory>
 
 // in future, decouple buffer and alignment logic
+template <typename T>
+struct BufferAllocator {
+    
+};
 
 template <typename T>
 class Buffer {
 public:
-    constexpr static std::size_t align_val{32};
-    constexpr static std::align_val_t alignment{align_val};
+    constexpr static std::size_t align_val{ 32 };
+    constexpr static std::align_val_t alignment{ align_val };
 
-    T* ptr;
-    std::size_t capacity; 
-    std::size_t size;
+    T* ptr{ nullptr };
+    std::size_t capacity{}; 
+    std::size_t size{};
 
-    Buffer() : ptr{nullptr}, capacity{0}, size{0} {}
+    Buffer() : ptr{ nullptr }, capacity{ 0 }, size{ 0 } {}
 
     explicit Buffer(std::size_t n) {
         if (n > max_size() || n <= 0) throw std::bad_array_new_length();
         size = n;
-        capacity = ((n + align_val - 1) & ~(align_val-1));
+        capacity = ((n + align_val - 1) & ~(align_val - 1)); // round to nearest multiple of 32
         ptr = static_cast<T*>(::operator new[](capacity * sizeof(T), alignment));
         if (!ptr) throw std::bad_alloc();
     }

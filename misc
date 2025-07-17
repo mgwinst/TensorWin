@@ -1,0 +1,10 @@
+*** broadcasting ***
+
+(2, 3)
+(3)
+
+get ref to larger view
+
+reverse iter over that view
+
+for as many elements in smaller view, ensure that map

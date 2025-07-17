@@ -3,14 +3,15 @@
 #include <iostream>
 
 #include "view.h"
+#include "utils.h"
 
 View::View(const std::vector<std::size_t>& shape) :
-    shape{shape},
-    strides{get_strides_from_shape(shape)} {}
+    shape{ shape },
+    strides{ get_strides_from_shape(shape) } {}
 
 View::View(const View& other) : 
-    shape{other.shape},
-    strides{other.strides} {}
+    shape{ other.shape },
+    strides{ other.strides } {}
  
 View& View::operator=(const View& other) {
     if (this != &other) {
@@ -21,8 +22,8 @@ View& View::operator=(const View& other) {
 }
 
 View::View(View&& other) : 
-    shape{std::move(other.shape)},
-    strides{std::move(other.strides)}
+    shape{ std::move(other.shape) },
+    strides{ std::move(other.strides) }
     {
         // clearing the old vectors, necessary?
         other.shape.clear();

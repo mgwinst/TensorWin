@@ -20,9 +20,6 @@ static Tensor<T> zeros_like(const Tensor<T>& tensor) noexcept;
 static void print(const Tensor<T>& tensor) noexcept;
 static void print2D(const Tensor<T>& tensor) noexcept; // debug helper, will remove later
 
-
-
-
 *** PROPERTIES ***
 
 std::vector<std::size_t> shape() const noexcept;
