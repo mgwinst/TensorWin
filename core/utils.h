@@ -3,8 +3,13 @@
 #include <numeric>
 #include <vector>
 #include <utility>
+#include <ranges>
 
-#include "tensor.h"
+namespace rng = std::ranges;
+
+
+template <typename T>
+class Tensor;
 
 inline std::size_t get_size_from_shape(const std::vector<std::size_t>& shape) {
     if (shape.size() == 1) return shape[0];
@@ -26,21 +31,29 @@ inline std::vector<std::size_t> get_strides_from_shape(const std::vector<std::si
 template <typename T>
 std::pair<const Tensor<T>&, const Tensor<T>&> 
 find_larger_smaller(const Tensor<T>& t1, const Tensor<T>& t2) {
-    return (t1.ndim() >= t2.ndim()) ? std::make_pair(t1, t2) : std::make_pair(t2, t1);
+    if (t1.ndim() >= t2.ndim()) return {t1, t2};
+    else return {t2, t1};
 }
 
 template <typename T>
-inline void broadcastable(const Tensor<T>& t1, const Tensor<T>& t2) {
-    auto [larger, smaller] = find_larger_smaller(t1, t2);   
+bool broadcastable(const Tensor<T>& t1, const Tensor<T>& t2) {
+    auto&& [larger, smaller] = find_larger_smaller(t1, t2);   
     auto dim_diff = larger.ndim() - smaller.ndim();
 
-    std::vector<T> tmp = smaller.view.shape();
-    tmp.insert(tmp.begin(), dim_diff, 1);
+    auto larger_dims = larger.shape();
+    auto smaller_dims = smaller.shape();
 
-    std::print("{}\n", larger.shape());
-    std::print("{}\n", tmp);
+    smaller_dims.insert(smaller_dims.begin(), dim_diff, 1);
 
-    
+    auto rev_zip_dims = rng::views::zip(larger_dims, smaller_dims) | rng::views::reverse;
+    std::print("{}\n", rev_zip_dims);
+
+    for (auto&& [dim1, dim2] : rev_zip_dims) {
+        if (dim1 == dim2 || (dim1 == 1 || dim2 == 1)) continue;
+        else return false;
+    }
+
+    return true;
 }
 
 

@@ -1,5 +1,5 @@
-clang++ -std=c++23 test_main.cpp -I../core/ \
-    ../core/view.cpp \
-    tensor_properties.cpp tensor_construction_assignment.cpp tensor_functions.cpp \
-    buffer_properties.cpp \
+clang++ -std=c++23 test_main.cc -I../core/ \
+    ../core/view.cc \
+    tensor_properties.cc tensor_construction_assignment.cc tensor_functions.cc \
+    buffer_properties.cc \
     -lgtest -lgtest_main && ./a.out

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-clang++ -std=c++23 main.cpp ./core/view.cpp && ./a.out
+clang++ -std=c++23 main.cc ./core/view.cc && ./a.out
