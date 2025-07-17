@@ -19,4 +19,5 @@ TEST(TensorBroadcasting, broadcastable) {
     Tensor<float> g = Tensor<float>::ones({4, 16, 16});
     Tensor<float> h = Tensor<float>::ones({2, 2});
     EXPECT_EQ(broadcastable(g, h), false);
+
 }
