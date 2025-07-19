@@ -56,7 +56,7 @@ template <typename T>
 struct Buffer {   
     std::vector<T, BufferAllocator<T>> data;
 
-    Buffer(std::size_t n) : buffer(n) {}
+    Buffer(std::size_t n) : data(n) {}
 
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;

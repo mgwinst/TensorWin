@@ -4,18 +4,21 @@
 #include <vector>
 #include <utility>
 #include <ranges>
+#include <span>
 
+namespace ranges = std::ranges;
 namespace rv = std::ranges::views;
 
 template <typename T>
 class Tensor;
 
-inline std::size_t get_size_from_shape(const std::vector<std::size_t>& shape) {
+inline std::size_t get_size_from_shape(std::span<const std::size_t> shape) {
+    if (shape.empty()) return 0;
     if (shape.size() == 1) return shape[0];
     return std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<>());
 }
 
-inline std::vector<std::size_t> get_strides_from_shape(const std::vector<std::size_t>& shape) {
+inline std::vector<std::size_t> get_strides_from_shape(std::span<const std::size_t> shape) {
     std::vector<std::size_t> strides(shape.size());
     std::size_t index = shape.size() - 1;
     std::size_t acc = 1;

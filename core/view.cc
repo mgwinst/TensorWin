@@ -5,8 +5,8 @@
 #include "view.h"
 #include "utils.h"
 
-View::View(const std::vector<std::size_t>& shape) :
-    shape{ shape },
+View::View(std::span<const std::size_t> shape) :
+    shape{ std::ranges::to<std::vector<std::size_t>>(shape) },
     strides{ get_strides_from_shape(shape) } {}
 
 View::View(const View& other) : 

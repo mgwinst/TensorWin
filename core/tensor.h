@@ -3,6 +3,7 @@
 #include <memory>
 #include <print>
 #include <cmath>
+#include <span>
 
 #include "buffer.h"
 #include "view.h"
@@ -15,12 +16,12 @@ public:
     View view;
     std::shared_ptr<Buffer<T>> buffer;
 
-    Tensor(const std::vector<std::size_t>& shape) :
+    Tensor(std::span<const std::size_t> shape) :
         view{ shape },
         buffer{ std::make_shared<Buffer<T>>(get_size_from_shape(shape)) } {}
 
     // want the option to specifiy a buffer (e.g. reshape())
-    Tensor(const std::vector<std::size_t>& shape, std::shared_ptr<Buffer<T>> new_buffer) noexcept : 
+    Tensor(std::span<const std::size_t> shape, std::shared_ptr<Buffer<T>> new_buffer) noexcept : 
         view{ shape }, 
         buffer{ new_buffer } {}
 
@@ -57,15 +58,15 @@ public:
 
 
 
-    static Tensor<T> zeros(const std::vector<std::size_t>& shape) {
+    static Tensor<T> zeros(std::span<const std::size_t> shape) {
         Tensor<T> t{ shape };
         for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->ptr[i] = 0;
+            t.buffer->data.at(i) = 0;
         }
         return t;
     }
     
-    static Tensor<T> ones(const std::vector<std::size_t>& shape) {
+    static Tensor<T> ones(std::span<const std::size_t> shape) {
         Tensor<T> t{ shape };
         for (std::size_t i = 0; i < t.size(); i++) {
             t.buffer->ptr[i] = 1;
@@ -73,7 +74,7 @@ public:
         return t;
     }
     
-    static Tensor<T> full(const std::vector<std::size_t>& shape, T fill_value) {
+    static Tensor<T> full(std::span<const std::size_t> shape, T fill_value) {
         Tensor<T> t{ shape };
         for (std::size_t i = 0; i < t.size(); i++) {
             t.buffer->ptr[i] = fill_value;
@@ -147,7 +148,7 @@ public:
     
     // reshape() will not change state, but return another Tensor with a new view
     // do we need a view() alias?
-    Tensor<T> reshape(const std::vector<std::size_t>& shape) const {
+    Tensor<T> reshape(std::span<const std::size_t> shape) const {
         auto n = std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<>());
         if (size() != (n)) throw std::invalid_argument("reshape dims mismatch");
         return Tensor<T>{ shape, buffer };
@@ -200,7 +201,7 @@ public:
     std::vector<std::size_t> shape() const noexcept { return view.shape; }
     std::size_t shape(const std::size_t dim) const noexcept { return view.shape.at(dim); }
     std::vector<std::size_t> strides() const noexcept { return view.strides; }
-    std::size_t size() const noexcept { return buffer->size; }
+    std::size_t size() const noexcept { return buffer->data.size(); }
     std::size_t numel() const noexcept { return buffer->size; }
     std::size_t ndim() const noexcept { return view.shape.size(); }
     T* data() const noexcept { return buffer->ptr; }
