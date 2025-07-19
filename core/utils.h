@@ -6,9 +6,6 @@
 #include <ranges>
 #include <span>
 
-namespace ranges = std::ranges;
-namespace rv = std::ranges::views;
-
 template <typename T>
 class Tensor;
 
@@ -46,7 +43,7 @@ bool broadcastable(const Tensor<T>& t1, const Tensor<T>& t2) {
 
     smaller_dims.insert(smaller_dims.begin(), dim_diff, 1);
 
-    auto rev_zip_dims = rv::zip(larger_dims, smaller_dims) | rv::reverse;
+    auto rev_zip_dims = std::views::zip(larger_dims, smaller_dims) | std::views::reverse;
 
     for (auto&& [dim1, dim2] : rev_zip_dims) {
         if (dim1 == dim2 || (dim1 == 1 || dim2 == 1)) continue;

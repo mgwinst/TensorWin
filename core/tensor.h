@@ -16,12 +16,12 @@ public:
     View view;
     std::shared_ptr<Buffer<T>> buffer;
 
-    Tensor(std::span<const std::size_t> shape) :
+    Tensor(const std::vector<std::size_t>& shape) :
         view{ shape },
         buffer{ std::make_shared<Buffer<T>>(get_size_from_shape(shape)) } {}
 
     // want the option to specifiy a buffer (e.g. reshape())
-    Tensor(std::span<const std::size_t> shape, std::shared_ptr<Buffer<T>> new_buffer) noexcept : 
+    Tensor(const std::vector<std::size_t>& shape, std::shared_ptr<Buffer<T>> new_buffer) noexcept : 
         view{ shape }, 
         buffer{ new_buffer } {}
 
@@ -58,27 +58,21 @@ public:
 
 
 
-    static Tensor<T> zeros(std::span<const std::size_t> shape) {
+    static Tensor<T> zeros(const std::vector<std::size_t>& shape) {
         Tensor<T> t{ shape };
-        for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->data.at(i) = 0;
-        }
+        std::ranges::fill(t.buffer->data, 0);
         return t;
     }
     
-    static Tensor<T> ones(std::span<const std::size_t> shape) {
+    static Tensor<T> ones(const std::vector<std::size_t> shape) {
         Tensor<T> t{ shape };
-        for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->ptr[i] = 1;
-        }
+        std::ranges::fill(t.buffer->data, 1);
         return t;
     }
     
-    static Tensor<T> full(std::span<const std::size_t> shape, T fill_value) {
+    static Tensor<T> full(const std::vector<std::size_t>& shape, T fill_value) {
         Tensor<T> t{ shape };
-        for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->ptr[i] = fill_value;
-        }
+        std::ranges::fill(t.buffer->data, fill_value);
         return t;
     }
     
@@ -204,7 +198,7 @@ public:
     std::size_t size() const noexcept { return buffer->data.size(); }
     std::size_t numel() const noexcept { return buffer->size; }
     std::size_t ndim() const noexcept { return view.shape.size(); }
-    T* data() const noexcept { return buffer->ptr; }
+    T* data() const noexcept { return buffer->data.data(); }
     std::size_t element_size() const noexcept { return sizeof(T); }
     std::size_t nbytes() const noexcept { return buffer->size * sizeof(T); }
     

@@ -24,6 +24,9 @@ struct BufferAllocator {
 
     BufferAllocator() noexcept = default;
 
+    BufferAllocator(const BufferAllocator&) noexcept = default; 
+    BufferAllocator& operator=(const BufferAllocator&) noexcept = default; 
+    
     template <typename U>
     BufferAllocator(const BufferAllocator<U>& other) noexcept {}
 
@@ -69,5 +72,4 @@ template <typename T>
 [[nodiscard]] std::shared_ptr<Buffer<T>> create_buffer(std::size_t size) {
     return std::make_shared<Buffer<T>>(size);
 }
-
 

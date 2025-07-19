@@ -11,7 +11,7 @@ public:
     std::vector<std::size_t> strides;
     // std::size_t offset;
     
-    View(std::span<const std::size_t>);
+    View(const std::vector<std::size_t>&);
 
     View() = delete;
     View(const View&);
