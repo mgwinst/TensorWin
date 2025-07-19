@@ -4,7 +4,7 @@
 TEST(TensorProperties, size) {
     // check this first
     Tensor<float> t0({32});
-    EXPECT_EQ(t0.size(), t0.buffer->size);
+    EXPECT_EQ(t0.size(), t0.buffer->data.size());
        
     Tensor<float> a({32});   
     EXPECT_EQ(a.size(), 32);

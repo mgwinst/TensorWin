@@ -38,36 +38,38 @@ TEST(TensorCreation, reshape_and_assign_to_self) {
 TEST(TensorCreation, zeros) {
     std::size_t size = 32;
     auto a = Tensor<float>::zeros({size});
-    for (auto i = 0; i < size; i++) {
-        EXPECT_EQ(a.buffer->ptr[i], 0.0);
+    
+    for (auto&& elem : a.buffer->data) {
+        EXPECT_EQ(elem, 0.0);
     }
 }
 
 TEST(TensorCreation, ones) {
     std::size_t size = 32;
-    auto a = Tensor<float>::ones({size});
-    for (auto i = 0; i < size; i++) {
-        EXPECT_EQ(a.buffer->ptr[i], 1);
+    auto a = Tensor<float>::zeros({size});
+    
+    for (auto&& elem : a.buffer->data) {
+        EXPECT_EQ(elem, 1.0);
     }
 }
 
 TEST(TensorCreation, linspace) {
     auto a = Tensor<float>::linspace(0, 10, 5);
-    EXPECT_EQ(a.buffer->ptr[0], 0.0);
-    EXPECT_EQ(a.buffer->ptr[1], 2.5);
-    EXPECT_EQ(a.buffer->ptr[2], 5.0);
-    EXPECT_EQ(a.buffer->ptr[3], 7.5);
-    EXPECT_EQ(a.buffer->ptr[4], 10.0);
+    EXPECT_EQ(a.buffer->data.at(0), 0.0);
+    EXPECT_EQ(a.buffer->data.at(1), 2.5);
+    EXPECT_EQ(a.buffer->data.at(2), 5.0);
+    EXPECT_EQ(a.buffer->data.at(3), 7.5);
+    EXPECT_EQ(a.buffer->data.at(4), 10.0);
 
     a = Tensor<float>::linspace(-10, 10, 5);
-    EXPECT_EQ(a.buffer->ptr[0], -10.0);
-    EXPECT_EQ(a.buffer->ptr[1], -5.0);
-    EXPECT_EQ(a.buffer->ptr[2], 0.0);
-    EXPECT_EQ(a.buffer->ptr[3], 5.0);
-    EXPECT_EQ(a.buffer->ptr[4], 10.0);
+    EXPECT_EQ(a.buffer->data.at(0), -10.0);
+    EXPECT_EQ(a.buffer->data.at(1), -5.0);
+    EXPECT_EQ(a.buffer->data.at(2), 0.0);
+    EXPECT_EQ(a.buffer->data.at(3), 5.0);
+    EXPECT_EQ(a.buffer->data.at(4), 10.0);
 }
 
-// do this later
+// to do
 TEST(TensorCreation, eye) {
     auto a = Tensor<float>::eye(3);
     
@@ -81,8 +83,8 @@ TEST(TensorCreation, full_like) {
     EXPECT_EQ(a.strides(), b.strides());
     EXPECT_EQ(a.size(), b.size());
     
-    for (auto i = 0; i < 16; i++) {
-        EXPECT_EQ(b.buffer->ptr[i], 3);
+    for (auto&& elem : b.buffer->data) {
+        EXPECT_EQ(elem, 3);
     }
 }
 
@@ -94,8 +96,8 @@ TEST(TensorCreation, ones_like) {
     EXPECT_EQ(a.strides(), b.strides());
     EXPECT_EQ(a.size(), b.size());
     
-    for (auto i = 0; i < 16; i++) {
-        EXPECT_EQ(b.buffer->ptr[i], 1);
+    for (auto&& elem : b.buffer->data) {
+        EXPECT_EQ(elem, 1);
     }
 }
 
@@ -106,9 +108,9 @@ TEST(TensorCreation, zeros_like) {
     EXPECT_EQ(a.shape(), b.shape());
     EXPECT_EQ(a.strides(), b.strides());
     EXPECT_EQ(a.size(), b.size());
-    
-    for (auto i = 0; i < 16; i++) {
-        EXPECT_EQ(b.buffer->ptr[i], 0);
+
+    for (auto&& elem : b.buffer->data) {
+        EXPECT_EQ(elem, 0);
     }
 }
 

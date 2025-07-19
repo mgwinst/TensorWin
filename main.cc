@@ -5,8 +5,6 @@
 #include "core/buffer.h"
 
 int main() {
-    auto t = Tensor<double>::ones({4, 4});
-    for (auto&& x : t.buffer->data) {
-        std::print("{} ", x);
-    }
+    auto t = Tensor<float>::zeros({4, 16, 16});
+
 }
