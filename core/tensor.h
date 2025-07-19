@@ -56,6 +56,7 @@ public:
 
 
 
+
     static Tensor<T> zeros(const std::vector<std::size_t>& shape) {
         Tensor<T> t{ shape };
         for (std::size_t i = 0; i < t.size(); i++) {
@@ -148,8 +149,7 @@ public:
     // do we need a view() alias?
     Tensor<T> reshape(const std::vector<std::size_t>& shape) const {
         auto n = std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<>());
-        if (size() != (n)) 
-            throw std::invalid_argument("reshape dims mismatch");
+        if (size() != (n)) throw std::invalid_argument("reshape dims mismatch");
         return Tensor<T>{ shape, buffer };
     }
     
@@ -159,16 +159,20 @@ public:
     
     void print2D() const noexcept {
         for (std::size_t i = 0; i < size(); i++) {
-            if (i % view.strides[0] == 0 && i != 0) std::cout << "\n";
+            if (i % view.strides[0] == 0 && i != 0) std::println();
             std::cout << buffer->ptr[i] << ' ';
         }
-        std::cout << '\n';
+        std::println();
     }
 
 
 
 
+
+
     // ops
+
+    // do shapes match? -> do op
 
     // check broadcastable?
     // expand dims
@@ -177,29 +181,19 @@ public:
     // (1, 4, 2)
     // (4, 1)
 
-    /*
-    Tensor<T> add(const Tensor<T>& other) {
+    void add(const Tensor<T>& other) {
+        if (shape() == other.shape()) {
+            // add
+        }
         if (broadcastable(*this, other)) {
-            
-
+            // expand
+            // add
         }
     }
-    */
 
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
+    void expand() {
+        
+    }
 
 
 

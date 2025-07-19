@@ -2,17 +2,11 @@
 #include <print>
 
 #include "core/tensor.h"
+#include "core/buffer.h"
 
 int main() {
-    Tensor<float> a = Tensor<float>::ones({3, 16, 4});
-    Tensor<float> b = Tensor<float>::ones({1, 3});
-
-    a.print();
-    b.print();
-
-    std::println();
-
-    std::print("{}\n", broadcastable(a, b));
-    
-
+    Buffer<int> buff{ 10 };
+    std::print("{}\n", buff.data.size());
+    std::print("{}\n", buff.data.capacity());
+    std::print("{}\n", buff.data);
 }

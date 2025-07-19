@@ -7,40 +7,61 @@
 #include <numeric>
 #include <memory>
 
-// in future, decouple buffer and alignment logic
 template <typename T>
 struct BufferAllocator {
+    using value_type = T;
+    using pointer = T*;
+    using const_pointer = const T*;
+    using reference = T&;
+    using const_reference = const T&;
+    using size_type = std::size_t;
+    using difference_type = std::ptrdiff_t;   
+
+    template <typename U>
+    struct rebind { 
+        using other = BufferAllocator<U>;
+    };
+
+    BufferAllocator() noexcept = default;
+
+    template <typename U>
+    BufferAllocator(const BufferAllocator<U>& other) noexcept {}
+
+    template <typename U>
+    BufferAllocator& operator=(const BufferAllocator<U>& other) noexcept {}
+
+    BufferAllocator(BufferAllocator&&) noexcept = delete;
+    BufferAllocator& operator=(BufferAllocator&&) noexcept = delete;
+
+    [[nodiscard]] T* allocate(std::size_t n) {
+        if (n > max_size() || n <= 0) throw std::bad_array_new_length();
+        T* ptr = static_cast<T*>(::operator new(n * sizeof(T)));
+        if (!ptr) throw std::bad_alloc();
+        return ptr;
+    }
+
+    void deallocate(T* ptr, std::size_t n) noexcept { ::operator delete(ptr); }
+
+    [[nodiscard]] std::size_t max_size() const noexcept { return std::numeric_limits<std::size_t>::max() / sizeof(T); }
     
 };
 
-template <typename T>
-class Buffer {
-public:
-    constexpr static std::size_t align_val{ 32 };
-    constexpr static std::align_val_t alignment{ align_val };
+template <typename T, typename U>
+bool operator==(const BufferAllocator<T>&, const BufferAllocator<U>&) { return true; }
 
-    T* ptr{ nullptr };
-    std::size_t capacity{}; 
-    std::size_t size{};
+template <typename T, typename U>
+bool operator!=(const BufferAllocator<T>&, const BufferAllocator<U>&) { return false; }
 
-    Buffer() : ptr{ nullptr }, capacity{ 0 }, size{ 0 } {}
+template <typename T> 
+struct Buffer {   
+    std::vector<T, BufferAllocator<T>> data;
 
-    explicit Buffer(std::size_t n) {
-        if (n > max_size() || n <= 0) throw std::bad_array_new_length();
-        size = n;
-        capacity = ((n + align_val - 1) & ~(align_val - 1)); // round to nearest multiple of 32
-        ptr = static_cast<T*>(::operator new[](capacity * sizeof(T), alignment));
-        if (!ptr) throw std::bad_alloc();
-    }
+    Buffer(std::size_t n) : buffer(n) {}
 
-    ~Buffer() noexcept { ::operator delete[](ptr, capacity * sizeof(T), alignment); }
-    
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;
     Buffer(Buffer&&) = delete;
     Buffer& operator=(Buffer&&) = delete;
-
-    [[nodiscard]] std::size_t max_size() const noexcept { return std::numeric_limits<std::size_t>::max() / sizeof(T); }
 
 };
 
