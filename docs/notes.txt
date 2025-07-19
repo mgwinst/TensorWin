@@ -37,3 +37,18 @@ us to keep the tensor lighter and only bufferize when we need to do computation 
 
 how to make buffer compatable with STL algorithms or ranges? 
     Iterators? what else?
+
+
+come back to this when implementing manual SIMD -> 
+class buffer {
+    constexpr static std::size_t align_val{ 32 };
+    constexpr static std::align_val_t alignment{ align_val };
+
+    [[nodiscard]] T* allocate(std::size_t n) {
+        if (n > max_size() || n <= 0) throw std::bad_array_new_length();
+        capacity = ((n + align_val - 1) & ~(align_val - 1)); // round to nearest multiple of 32
+        ptr = static_cast<T*>(::operator new(capacity * sizeof(T), alignment));
+        if (!ptr) throw std::bad_alloc();
+        return ptr;
+    }
+}

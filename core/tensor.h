@@ -3,6 +3,7 @@
 #include <memory>
 #include <print>
 #include <cmath>
+#include <span>
 
 #include "buffer.h"
 #include "view.h"
@@ -56,27 +57,22 @@ public:
 
 
 
+
     static Tensor<T> zeros(const std::vector<std::size_t>& shape) {
         Tensor<T> t{ shape };
-        for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->ptr[i] = 0;
-        }
+        std::ranges::fill(t.buffer->data, 0);
         return t;
     }
     
-    static Tensor<T> ones(const std::vector<std::size_t>& shape) {
+    static Tensor<T> ones(const std::vector<std::size_t> shape) {
         Tensor<T> t{ shape };
-        for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->ptr[i] = 1;
-        }
+        std::ranges::fill(t.buffer->data, 1);
         return t;
     }
     
     static Tensor<T> full(const std::vector<std::size_t>& shape, T fill_value) {
         Tensor<T> t{ shape };
-        for (std::size_t i = 0; i < t.size(); i++) {
-            t.buffer->ptr[i] = fill_value;
-        }
+        std::ranges::fill(t.buffer->data, fill_value);
         return t;
     }
     
@@ -146,10 +142,9 @@ public:
     
     // reshape() will not change state, but return another Tensor with a new view
     // do we need a view() alias?
-    Tensor<T> reshape(const std::vector<std::size_t>& shape) const {
+    Tensor<T> reshape(std::span<const std::size_t> shape) const {
         auto n = std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<>());
-        if (size() != (n)) 
-            throw std::invalid_argument("reshape dims mismatch");
+        if (size() != (n)) throw std::invalid_argument("reshape dims mismatch");
         return Tensor<T>{ shape, buffer };
     }
     
@@ -159,16 +154,20 @@ public:
     
     void print2D() const noexcept {
         for (std::size_t i = 0; i < size(); i++) {
-            if (i % view.strides[0] == 0 && i != 0) std::cout << "\n";
+            if (i % view.strides[0] == 0 && i != 0) std::println();
             std::cout << buffer->ptr[i] << ' ';
         }
-        std::cout << '\n';
+        std::println();
     }
 
 
 
 
+
+
     // ops
+
+    // do shapes match? -> do op
 
     // check broadcastable?
     // expand dims
@@ -177,39 +176,29 @@ public:
     // (1, 4, 2)
     // (4, 1)
 
-    /*
-    Tensor<T> add(const Tensor<T>& other) {
+    void add(const Tensor<T>& other) {
+        if (shape() == other.shape()) {
+            // add
+        }
         if (broadcastable(*this, other)) {
-            
-
+            // expand
+            // add
         }
     }
-    */
 
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
+    void expand() {
+        
+    }
 
 
 
     std::vector<std::size_t> shape() const noexcept { return view.shape; }
     std::size_t shape(const std::size_t dim) const noexcept { return view.shape.at(dim); }
     std::vector<std::size_t> strides() const noexcept { return view.strides; }
-    std::size_t size() const noexcept { return buffer->size; }
+    std::size_t size() const noexcept { return buffer->data.size(); }
     std::size_t numel() const noexcept { return buffer->size; }
     std::size_t ndim() const noexcept { return view.shape.size(); }
-    T* data() const noexcept { return buffer->ptr; }
+    T* data() const noexcept { return buffer->data.data(); }
     std::size_t element_size() const noexcept { return sizeof(T); }
     std::size_t nbytes() const noexcept { return buffer->size * sizeof(T); }
     
