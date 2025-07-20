@@ -61,25 +61,25 @@ public:
 
     static Tensor<T> zeros(const std::vector<std::size_t>& shape) {
         Tensor<T> t{ shape };
-        std::ranges::fill(t.buffer->data, 0);
+        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 0);
         return t;
     }
     
     static Tensor<T> ones(const std::vector<std::size_t> shape) {
         Tensor<T> t{ shape };
-        std::ranges::fill(t.buffer->data, 1);
+        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 1);
         return t;
     }
     
     static Tensor<T> full(const std::vector<std::size_t>& shape, T fill_value) {
         Tensor<T> t{ shape };
-        std::ranges::fill(t.buffer->data, fill_value);
+        std::fill(t.buffer->data.begin(), t.buffer->data.end(), fill_value);
         return t;
     }
     
     static Tensor<T> arange(std::size_t size) {
         Tensor<T> t{ {size} };
-        std::ranges::iota(t.buffer->data, 0);
+        std::views::iota(t.buffer->data, 0);
         return t;
     }
     
@@ -118,19 +118,19 @@ public:
     
     static Tensor<T> full_like(const Tensor<T>& tensor, std::size_t fill_value) {
         Tensor<T> t{ tensor.shape() };
-        std::ranges::fill(t.buffer->data, fill_value);
+        std::fill(t.buffer->data.begin(), t.buffer->data.end(), fill_value);
         return t;
     } 
     
     static Tensor<T> ones_like(const Tensor<T>& tensor) {
         Tensor<T> t{ tensor.shape() };
-        std::ranges::fill(t.buffer->data, 1);
+        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 1);
         return t;
     } 
     
     static Tensor<T> zeros_like(const Tensor<T>& tensor) {
         Tensor<T> t{ tensor.shape() };
-        std::ranges::fill(t.buffer->data, 0);
+        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 0);
         return t;
     } 
     
