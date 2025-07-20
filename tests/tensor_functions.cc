@@ -46,7 +46,7 @@ TEST(TensorCreation, zeros) {
 
 TEST(TensorCreation, ones) {
     std::size_t size = 32;
-    auto a = Tensor<float>::zeros({size});
+    auto a = Tensor<float>::ones({size});
     
     for (auto&& elem : a.buffer->data) {
         EXPECT_EQ(elem, 1.0);

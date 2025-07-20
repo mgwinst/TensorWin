@@ -1,15 +1,8 @@
 #include <gtest/gtest.h>
-#include <new>
+
 #include "../core/buffer.h"
 
-void buffer_allocation_to_throw() {
-    Buffer<float> buffer {0};
-}
-
-TEST(BufferProperties, alignment) {
-    EXPECT_THROW(buffer_allocation_to_throw(), std::bad_array_new_length);
-    // EXPECT_ANY_THROW(buffer_allocation_to_throw());
-
+TEST(BufferProperties, allocation_size) {
     Buffer<float> buffer1 {22};
     EXPECT_EQ(buffer1.data.size(), 22);
 

@@ -23,8 +23,8 @@ TEST(TensorProperties, nbytes) {
     Tensor<float> a({32});   
     EXPECT_EQ(a.nbytes(), 32 * (sizeof(float)));
 
-    Tensor<std::size_t> b({32});   
-    EXPECT_EQ(b.nbytes(), 32 * (sizeof(std::size_t)));
+    Tensor<double> b({32});   
+    EXPECT_EQ(b.nbytes(), 32 * (sizeof(double)));
 }
 
 TEST(TensorProperties, strides) {
