@@ -7,7 +7,7 @@
 
 View::View(const std::vector<std::size_t>& shape) :
     shape{ shape },
-    strides{ get_strides_from_shape(shape) } {}
+    strides{ common::get_strides_from_shape(shape) } {}
 
 View::View(const View& other) : 
     shape{ other.shape },
@@ -39,3 +39,5 @@ View& View::operator=(View&& other) {
     }
     return *this;
 }
+
+void View::print() const noexcept { std::println("(View -> (shape={}, strides={}))", shape, strides); }

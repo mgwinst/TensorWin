@@ -5,21 +5,21 @@
 #include <cmath>
 #include <span>
 #include <ranges>
+#include <execution>
 
 #include "buffer.h"
 #include "view.h"
 #include "concepts.h"
-#include "util.h"
+#include "utils.h"
 
 template <typename T> 
-class Tensor {
-public:
+struct Tensor {
     View view;
     std::shared_ptr<Buffer<T>> buffer;
 
     Tensor(const std::vector<std::size_t>& shape) :
         view{ shape },
-        buffer{ std::make_shared<Buffer<T>>(get_size_from_shape(shape)) } {}
+        buffer{ std::make_shared<Buffer<T>>(common::get_size_from_shape(shape)) } {}
 
     // want the option to specifiy a buffer (e.g. reshape())
     Tensor(const std::vector<std::size_t>& shape, std::shared_ptr<Buffer<T>> new_buffer) noexcept : 
@@ -137,7 +137,7 @@ public:
     // reshape() will not change state, but return another Tensor with a new view
     // do we need a view() alias?
     Tensor<T> reshape(const std::vector<std::size_t>& shape) const {
-        auto n = std::accumulate(std::begin(shape), std::end(shape), 1, std::multiplies<>());
+        auto n = std::accumulate(shape.begin(), shape.end(), 1, std::multiplies<>());
         if (size() != n) throw std::invalid_argument("reshape dims mismatch");
         return Tensor<T>{ shape, buffer };
     }
@@ -154,31 +154,31 @@ public:
         std::println();
     }
 
-
     // ops
 
     // do shapes match? -> do op
 
     // check broadcastable?
     // expand dims
-    // perform op
+    // perform element-wise op over new view
 
     // (1, 4, 2)
     // (4, 1)
 
-    void add(const Tensor<T>& other) {
-        if (shape() == other.shape()) {
-            // add
-        }
-        if (broadcastable(*this, other)) {
-            // expand
-            // add
+    template <typename U>
+    void add(const U& other) {
+        if constexpr (std::is_arithmetic_v<U>) {
+            std::ranges::for_each(std::execution::par, buffer->data, [other](T& elem) { elem += static_cast<T>(other); });
+        } else if constexpr (std::is_same_v<Tensor<T>, U>) {
+            if (shape() == other.shape()) {
+                std::ranges::transform(std::execution::par, buffer->data, other.buffer->data, buffer->data.begin(), [](const T a, const T b) { return a + b; });
+            } else {
+                
+            }
         }
     }
 
-    void expand() {
-        
-    }
+
 
 
 
