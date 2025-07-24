@@ -5,6 +5,6 @@
 #include "core/buffer.h"
 
 int main() {
-    auto t = Tensor<float>::zeros({4, 16, 16});
-
+    std::vector<int> v{ 1, 2, 3, 4, 5 };
+    std::print("{}\n", v);
 }

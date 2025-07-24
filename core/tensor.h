@@ -9,7 +9,7 @@
 #include "buffer.h"
 #include "view.h"
 #include "concepts.h"
-#include "util.h"
+#include "utils.h"
 
 template <typename T> 
 class Tensor {
@@ -79,7 +79,7 @@ public:
     
     static Tensor<T> arange(std::size_t size) {
         Tensor<T> t{ {size} };
-        std::ranges::iota(t.buffer->data, 0);
+        std::views::iota(t.buffer->data, 0);
         return t;
     }
     
@@ -143,9 +143,9 @@ public:
     }
     
     void print() const noexcept {
-        std::println("(Tensor -> (shape={}, strides={}, size=[{}]))", shape(), strides(), size());
+        std::print("(Tensor -> (shape={}, strides={}, size=[{}]))", shape(), strides(), size());
     }
-    
+
     void print2D() const noexcept {
         for (std::size_t i = 0; i < size(); i++) {
             if (i % view.strides[0] == 0 && i != 0) std::println();

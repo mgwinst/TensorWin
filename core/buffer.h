@@ -37,12 +37,13 @@ struct BufferAllocator {
     BufferAllocator& operator=(BufferAllocator&&) noexcept = delete;
 
     [[nodiscard]] T* allocate(std::size_t n) {
-        if (n > max_size() || n <= 0) throw std::bad_array_new_length();
+        if (n > max_size() || n < 0) throw std::bad_array_new_length();
         T* ptr = static_cast<T*>(::operator new(n * sizeof(T)));
         if (!ptr) throw std::bad_alloc();
         return ptr;
     }
 
+    // vector<>::size() being passed to n?
     void deallocate(T* ptr, std::size_t n) noexcept { ::operator delete(ptr); }
 
     [[nodiscard]] std::size_t max_size() const noexcept { return std::numeric_limits<std::size_t>::max() / sizeof(T); }
