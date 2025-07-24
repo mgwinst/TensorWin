@@ -39,5 +39,3 @@ View& View::operator=(View&& other) {
     }
     return *this;
 }
-
-void View::print() const noexcept { std::println("(View -> (shape={}, strides={}))", shape, strides); }

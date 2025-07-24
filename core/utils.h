@@ -5,6 +5,7 @@
 #include <utility>
 #include <ranges>
 #include <span>
+#include <print>
 
 #include "view.h"
 
@@ -34,10 +35,6 @@ namespace common {
     std::pair<const Tensor<T>&, const Tensor<T>&> find_larger_smaller(const Tensor<T>& t1, const Tensor<T>& t2) {
         if (t1.ndim() >= t2.ndim()) return {t1, t2};
         else return {t2, t1};
-    }
-
-    void align_left() {
-        
     }
 
     template <typename T>

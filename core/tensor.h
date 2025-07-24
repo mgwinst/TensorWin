@@ -61,19 +61,19 @@ struct Tensor {
 
     static Tensor<T> zeros(const std::vector<std::size_t>& shape) {
         Tensor<T> t{ shape };
-        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 0);
+        std::ranges::fill(t.buffer->data, 0);
         return t;
     }
     
     static Tensor<T> ones(const std::vector<std::size_t> shape) {
         Tensor<T> t{ shape };
-        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 1);
+        std::ranges::fill(t.buffer->data, 1);
         return t;
     }
     
     static Tensor<T> full(const std::vector<std::size_t>& shape, T fill_value) {
         Tensor<T> t{ shape };
-        std::fill(t.buffer->data.begin(), t.buffer->data.end(), fill_value);
+        std::ranges::fill(t.buffer->data, fill_value);
         return t;
     }
     
@@ -118,19 +118,19 @@ struct Tensor {
     
     static Tensor<T> full_like(const Tensor<T>& tensor, std::size_t fill_value) {
         Tensor<T> t{ tensor.shape() };
-        std::fill(t.buffer->data.begin(), t.buffer->data.end(), fill_value);
+        std::ranges::fill(t.buffer->data, fill_value);
         return t;
     } 
     
     static Tensor<T> ones_like(const Tensor<T>& tensor) {
         Tensor<T> t{ tensor.shape() };
-        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 1);
+        std::ranges::fill(t.buffer->data, 1);
         return t;
     } 
     
     static Tensor<T> zeros_like(const Tensor<T>& tensor) {
         Tensor<T> t{ tensor.shape() };
-        std::fill(t.buffer->data.begin(), t.buffer->data.end(), 0);
+        std::ranges::fill(t.buffer->data, 0);
         return t;
     } 
     
@@ -142,8 +142,11 @@ struct Tensor {
         return Tensor<T>{ shape, buffer };
     }
     
+
+    // hopefully printing ranges will work in libstdc++ soon
+    /*
     void print() const noexcept {
-        std::print("(Tensor -> (shape={}, strides={}, size=[{}]))", shape(), strides(), size());
+        std::println("(Tensor -> (shape={}, strides={}, size=[{}]))", sh, st, size());
     }
 
     void print2D() const noexcept {
@@ -153,6 +156,11 @@ struct Tensor {
         }
         std::println();
     }
+    */
+
+
+
+
 
     // ops
 
@@ -165,13 +173,14 @@ struct Tensor {
     // (1, 4, 2)
     // (4, 1)
 
-    template <typename U>
-    void add(const U& other) {
+    template <typename ExecutionPolicy, typename U>
+    requires std::is_execution_policy_v<std::remove_cvref_t<ExecutionPolicy>>
+    void add(ExecutionPolicy&& policy, const U& other) {
         if constexpr (std::is_arithmetic_v<U>) {
-            std::ranges::for_each(std::execution::par, buffer->data, [other](T& elem) { elem += static_cast<T>(other); });
-        } else if constexpr (std::is_same_v<Tensor<T>, U>) {
+            std::for_each(policy, buffer->data.begin(), buffer->data.end(), [other](U& elem) { elem += static_cast<U>(other); }); }
+        else if constexpr (std::is_same_v<Tensor<T>, U>) {
             if (shape() == other.shape()) {
-                std::ranges::transform(std::execution::par, buffer->data, other.buffer->data, buffer->data.begin(), [](const T a, const T b) { return a + b; });
+                std::ranges::transform(policy, buffer->data, other.buffer->data, buffer->data, [](const U a, const U b) { return a + b; });
             } else {
                 
             }

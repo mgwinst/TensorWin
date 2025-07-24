@@ -2,7 +2,7 @@
 
 #include "../core/buffer.h"
 
-TEST(BufferProperties, allocation_size) {
+TEST(BufferProperties, allocation) {
     Buffer<float> buffer1 {22};
     EXPECT_EQ(buffer1.data.size(), 22);
 
